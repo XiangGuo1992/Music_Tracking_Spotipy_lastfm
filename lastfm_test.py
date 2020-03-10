@@ -24,7 +24,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-os.chdir('C:/Users/Xiang Guo/Desktop/lastfm_data')
+os.chdir('C:/Users/Inki Kim\'s lab/Google Drive/lastfm_data')
 
 #df = pd.read_csv('aria464/2019-08-11 00-00-00 - 2019-08-12 00-00-00.csv')
 
@@ -198,23 +198,26 @@ month = x.month
 day = x.day
 
 end_time = time.mktime(time.strptime('{}/{}/{}'.format(day,month,year),  "%d/%m/%Y")) 
-start_time = end_time - 3600*24*5
+start_time = end_time - 3600*24
 
 
 # for different users
 usernames = ['Gx_shawn','Gusiev', 'aria464', 'arashtavakoli','luisjlr','paulbonczek',
-             'sanjanamendu','etiffanies','emrobartes']
-
-
+             'sanjanamendu','etiffanies','emrobartes','rogerzhuuva','Jessicauva']
 for username in usernames:
     user = network.get_user(username)
+    print('for {}:'.format(username))
     try:
         os.mkdir(username)
     except:
         pass
     user_path = os.path.join(username)
     #recent_tracks = user.get_recent_tracks(time_from = '1564433351',time_to = '1564434568')
-    recent_tracks = user.get_recent_tracks(limit = None, time_from = int(start_time),time_to = int(end_time))
+    try:
+        recent_tracks = user.get_recent_tracks(limit = 500, time_from = int(start_time),time_to = int(end_time))
+        print('length:{}'.format(len(recent_tracks)))
+    except:
+        pass
     
     df = pd.DataFrame(columns = ['Album', 'Playback_date','Local_date','Timestamp', 'Track','Artist','Song','Corrected_song','Duration',\
                                  'Duration_spotify', 'danceability', 'energy', 'key', 'loudness', 'mode', 'speechiness',\
